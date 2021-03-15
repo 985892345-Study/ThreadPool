@@ -6,22 +6,24 @@ class RunnableQueue : Runnable {
 
     private val tasks: LinkedBlockingQueue<Runnable> = LinkedBlockingQueue<Runnable>()
     private var isRunning = true
-    private var isShutDown = false
+    private var isStop = false
 
     override fun run() {
         while (isRunning) {
             tasks.take().run()
         }
-        isShutDown = true
+        isStop = true
     }
 
     fun stop() {
-        this.isRunning = false
+        isRunning = false
+        tasks.clear()
     }
 
-    fun isStop() : Boolean = isShutDown
+    fun isStop() : Boolean = isStop
 
     fun add(task: Runnable) {
+        isRunning = true
         tasks.put(task)
     }
 
