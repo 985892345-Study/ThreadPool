@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ThreadPool</string>
+    <string name="tv_start">start</string>
+    <string name="tv_shutdown">shutdown</string>
 </resources>

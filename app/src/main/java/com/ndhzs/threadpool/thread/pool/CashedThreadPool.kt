@@ -1,12 +1,13 @@
 package com.ndhzs.threadpool.thread.pool
 
 import com.ndhzs.threadpool.thread.myinterface.IThreadPool
-import com.ndhzs.threadpool.thread.myrunnable.RunnableQueue
+import com.ndhzs.threadpool.thread.myrunnable.MyRunnable
+import java.util.*
 
-class CashedThreadPool(private var maxThreadNum: Int) : IThreadPool {
+class CashedThreadPool(private var maxThreadNum: Int = 0) : IThreadPool {
 
-    private val tasks = RunnableQueue()
-    private val threads = ArrayList<MyThread>()
+    private val tasks = MyRunnable()
+    private val threads = LinkedList<MyThread>()
 
     override fun execute(task: Runnable) {
         tasks.add(task)

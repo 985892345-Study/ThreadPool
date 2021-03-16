@@ -2,38 +2,38 @@ package com.ndhzs.threadpool.thread.pool
 
 import android.util.Log
 import com.ndhzs.threadpool.thread.myinterface.IThreadPool
-import com.ndhzs.threadpool.thread.myrunnable.RunnableQueue
+import com.ndhzs.threadpool.thread.myrunnable.MyRunnable
 
-class FixedThreadPool(private var maxThreadNum: Int = 2) : IThreadPool {
+class FixedThreadPool(private var maxThreadNum: Int = 3) : IThreadPool {
 
-    private val tasks = RunnableQueue()
-    private val threads = ArrayList<MyThread>()
+    private val tasks = MyRunnable()
+    private val threads = ArrayList<Thread>()
     init {
         if (maxThreadNum > 10) maxThreadNum = 10
         initializeThreads()
     }
 
     private fun initializeThreads() {
-        var thread: MyThread
+        var thread: Thread
         for (i in 0 until maxThreadNum) {
-            thread = MyThread(tasks)
+            thread = Thread(tasks)
             thread.start()
-            threads.add(MyThread(tasks))
+            threads.add(Thread(tasks))
         }
     }
 
     override fun execute(task: Runnable) {
-        tasks.add(task)
-        if (!isShutdown()) {
+        if (isShutdown()) {
+            Log.d("123", "==============  RESTART  ==============")
+            tasks.restart()
             initializeThreads()
         }
+        tasks.add(task)
     }
 
     override fun shutdown() {
         tasks.stop()
-        threads.forEach {
-            it.interrupt()
-        }
+        threads.clear()
     }
 
     override fun getThreadNum(): Int = maxThreadNum
@@ -41,31 +41,22 @@ class FixedThreadPool(private var maxThreadNum: Int = 2) : IThreadPool {
     override fun getTaskRemainNum(): Int = tasks.taskRemainNum()
 
     override fun isShutdown(): Boolean {
-        return threads[maxThreadNum - 1].isInterrupted
+        return tasks.isStop()
     }
 
     fun addThreadNum(threadNum: Int) {
-        if (threadNum <= 0 || maxThreadNum > 10)
+        if (threadNum <= 0) {
             return
-        var thread: MyThread
+        }
+        if (maxThreadNum + threadNum > 10) {
+            maxThreadNum = 10
+        }
+        var thread: Thread
         for (i in 0 until threadNum) {
-            thread = MyThread(tasks)
+            thread = Thread(tasks)
             thread.start()
             threads.add(thread)
         }
-        this.maxThreadNum += threadNum
-    }
-
-    private inner class MyThread(tasks: Runnable) : Thread() {
-        override fun run() {
-            while (!isInterrupted) {
-                try {
-                    tasks.run()
-                }catch (e: Exception) {
-                    Log.d("123", "OVER")
-                    break
-                }
-            }
-        }
+        maxThreadNum += threadNum
     }
 }
