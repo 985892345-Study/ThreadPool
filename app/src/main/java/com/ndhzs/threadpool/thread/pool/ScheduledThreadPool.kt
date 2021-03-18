@@ -11,6 +11,18 @@ class ScheduledThreadPool : IThreadPool{
         TODO("Not yet implemented")
     }
 
+    override fun shutdownNow() {
+        TODO("Not yet implemented")
+    }
+
+    override fun isShutdown(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun reStart() {
+        TODO("Not yet implemented")
+    }
+
     override fun getThreadNum(): Int {
         TODO("Not yet implemented")
     }
@@ -19,7 +31,11 @@ class ScheduledThreadPool : IThreadPool{
         TODO("Not yet implemented")
     }
 
-    override fun isShutdown(): Boolean {
+    override fun threadStart(task: Runnable) {
+        TODO("Not yet implemented")
+    }
+
+    override fun threadEnd() {
         TODO("Not yet implemented")
     }
 }

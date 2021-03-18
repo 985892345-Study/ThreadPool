@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,7 +15,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.16000003" />
@@ -26,22 +25,31 @@
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
         android:text="@string/tv_start"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_single_shutdown"
         app:layout_constraintEnd_toStartOf="@+id/btn_single_shutdown"
-        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="@+id/btn_single_shutdown" />
 
     <Button
         android:id="@+id/btn_single_shutdown"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="@string/tv_shutdown"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_single_start"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_single_start"
-        app:layout_constraintTop_toTopOf="@+id/btn_single_start" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/btn_single_restart"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_single_shutdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_single_shutdown"
+        app:layout_constraintTop_toTopOf="@+id/btn_single_shutdown" />
 
     <TextView
         android:id="@+id/textView2"
@@ -59,21 +67,30 @@
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
         android:text="@string/tv_start"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_fixed_shutdown"
         app:layout_constraintEnd_toEndOf="@+id/btn_single_start"
         app:layout_constraintStart_toStartOf="@+id/btn_single_start"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.45" />
+        app:layout_constraintTop_toTopOf="@+id/btn_fixed_shutdown" />
 
     <Button
         android:id="@+id/btn_fixed_shutdown"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
         android:text="@string/tv_shutdown"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_fixed_start"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="@+id/btn_single_shutdown"
         app:layout_constraintStart_toStartOf="@+id/btn_single_shutdown"
-        app:layout_constraintTop_toTopOf="@+id/btn_fixed_start" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <Button
+        android:id="@+id/btn_fixed_restart"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_restart"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_fixed_shutdown"
+        app:layout_constraintEnd_toEndOf="@+id/btn_single_restart"
+        app:layout_constraintStart_toStartOf="@+id/btn_single_restart"
+        app:layout_constraintTop_toTopOf="@+id/btn_fixed_shutdown" />
 
     <TextView
         android:id="@+id/textView3"
@@ -90,23 +107,31 @@
         android:id="@+id/btn_cashed_start"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:text="@string/tv_start"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_cashed_shutdown"
         app:layout_constraintEnd_toEndOf="@+id/btn_fixed_start"
         app:layout_constraintStart_toStartOf="@+id/btn_fixed_start"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toTopOf="@+id/btn_cashed_shutdown" />
 
     <Button
         android:id="@+id/btn_cashed_shutdown"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
         android:text="@string/tv_shutdown"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_cashed_start"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="@+id/btn_fixed_shutdown"
         app:layout_constraintStart_toStartOf="@+id/btn_fixed_shutdown"
-        app:layout_constraintTop_toTopOf="@+id/btn_cashed_start" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/btn_cashed_restart"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_restart"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_cashed_shutdown"
+        app:layout_constraintEnd_toEndOf="@+id/btn_fixed_restart"
+        app:layout_constraintStart_toStartOf="@+id/btn_fixed_restart"
+        app:layout_constraintTop_toTopOf="@+id/btn_cashed_shutdown" />
 
     <TextView
         android:id="@+id/textView4"
@@ -120,23 +145,33 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
-        android:id="@+id/btn_schedul_start"
+        android:id="@+id/btn_schedule_start"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_start"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_schedule_shutdown"
+        app:layout_constraintEnd_toEndOf="@+id/btn_cashed_start"
+        app:layout_constraintStart_toStartOf="@+id/btn_cashed_start"
+        app:layout_constraintTop_toTopOf="@+id/btn_schedule_shutdown" />
+
+    <Button
+        android:id="@+id/btn_schedule_shutdown"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/tv_start"
-        app:layout_constraintEnd_toEndOf="@+id/btn_cashed_start"
-        app:layout_constraintStart_toStartOf="@+id/btn_cashed_start"
+        android:text="@string/tv_shutdown"
+        app:layout_constraintEnd_toEndOf="@+id/btn_cashed_shutdown"
+        app:layout_constraintStart_toStartOf="@+id/btn_cashed_shutdown"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
-        android:id="@+id/btn_schedul_shutdown"
+        android:id="@+id/btn_schedule_restart"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
-        android:text="@string/tv_shutdown"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_schedul_start"
-        app:layout_constraintEnd_toEndOf="@+id/btn_cashed_shutdown"
-        app:layout_constraintStart_toStartOf="@+id/btn_cashed_shutdown"
-        app:layout_constraintTop_toTopOf="@+id/btn_schedul_start" />
+        android:text="@string/tv_restart"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_schedule_shutdown"
+        app:layout_constraintEnd_toEndOf="@+id/btn_cashed_restart"
+        app:layout_constraintStart_toStartOf="@+id/btn_cashed_restart"
+        app:layout_constraintTop_toTopOf="@+id/btn_schedule_shutdown" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

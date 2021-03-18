@@ -20,11 +20,27 @@ class CashedThreadPool(private var maxThreadNum: Int = 0) : IThreadPool {
         TODO("Not yet implemented")
     }
 
+    override fun shutdownNow() {
+        TODO("Not yet implemented")
+    }
+
+    override fun isShutdown(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun reStart() {
+        TODO("Not yet implemented")
+    }
+
     override fun getThreadNum(): Int = maxThreadNum
 
     override fun getTaskRemainNum(): Int = tasks.taskRemainNum()
 
-    override fun isShutdown(): Boolean {
+    override fun threadStart(task: Runnable) {
+        TODO("Not yet implemented")
+    }
+
+    override fun threadEnd() {
         TODO("Not yet implemented")
     }
 

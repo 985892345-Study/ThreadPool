@@ -2,7 +2,9 @@ package com.ndhzs.threadpool.thread.myrunnable
 
 import android.util.Log
 
-class MyRunnable : Runnable {
+class MyRunnable() : Runnable {
+
+    private val TAG ="123"
 
     private val tasks = RunnableQueue()
     @Volatile
@@ -14,7 +16,11 @@ class MyRunnable : Runnable {
         while (isRunning) {
             tasks.take()?.run()
         }
-        Log.d("123", "OVER")
+        Log.d(TAG, "OVER")
+        if (Thread.currentThread().isInterrupted) {
+            Log.d(TAG, "INTERRUPT")
+            return
+        }
         isStop = true
     }
 
@@ -37,4 +43,9 @@ class MyRunnable : Runnable {
     }
 
     fun taskRemainNum(): Int = tasks.size()
+
+    interface OnThreadStopListener {
+        fun threadStop()
+        fun allThreadStop()
+    }
 }
