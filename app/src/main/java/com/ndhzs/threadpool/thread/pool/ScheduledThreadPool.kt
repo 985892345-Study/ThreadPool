@@ -1,8 +1,9 @@
 package com.ndhzs.threadpool.thread.pool
 
 import com.ndhzs.threadpool.thread.myinterface.IThreadPool
+import com.ndhzs.threadpool.thread.myinterface.OnThreadListener
 
-class ScheduledThreadPool : IThreadPool{
+class ScheduledThreadPool : IThreadPool {
     override fun execute(task: Runnable) {
         TODO("Not yet implemented")
     }
@@ -31,11 +32,7 @@ class ScheduledThreadPool : IThreadPool{
         TODO("Not yet implemented")
     }
 
-    override fun threadStart(task: Runnable) {
-        TODO("Not yet implemented")
-    }
-
-    override fun threadEnd() {
+    override fun setThreadListener(l: OnThreadListener) {
         TODO("Not yet implemented")
     }
 }

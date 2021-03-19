@@ -1,54 +1,69 @@
 package com.ndhzs.threadpool.thread.pool
 
+import android.util.Log
 import com.ndhzs.threadpool.thread.myinterface.IThreadPool
+import com.ndhzs.threadpool.thread.myinterface.OnThreadListener
 import com.ndhzs.threadpool.thread.myrunnable.MyRunnable
+import com.ndhzs.threadpool.thread.myrunnable.MyThread
 import java.util.*
+import java.util.concurrent.LinkedBlockingQueue
 
-class CashedThreadPool(private var maxThreadNum: Int = 0) : IThreadPool {
+class CashedThreadPool(private val initialCount: Int = 0, private val maxCount: Int = 10) : IThreadPool, MyRunnable.OnThreadStopListener {
 
-    private val tasks = MyRunnable()
-    private val threads = LinkedList<MyThread>()
+    private var isShutdown = false
+    private val tasks = MyRunnable(this)
+    private var listener: OnThreadListener? = null
+    private val threads = LinkedBlockingQueue<MyThread>()
 
     override fun execute(task: Runnable) {
-        tasks.add(task)
-        if (threads.size == 0) {
-            threads.add(MyThread(tasks))
+        if (isShutdown) {
+            throw IllegalStateException("The thread pool is destroy")
         }
+        tasks.add(task)
+        if (tasks.getRemainNum() > threads.size) {
+            initializeThreads()
+        }
+    }
+
+    private fun initializeThreads(newThreadNum: Int = 1) {
+        var thread: MyThread
+        for (i in 0 until newThreadNum) {
+            thread = MyThread(tasks, true)
+            thread.start()
+            threads.add(thread)
+        }
+        listener?.threadChange(newThreadNum + threads.size)
     }
 
     override fun shutdown() {
-        TODO("Not yet implemented")
+        isShutdown = true
     }
 
     override fun shutdownNow() {
-        TODO("Not yet implemented")
-    }
-
-    override fun isShutdown(): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun reStart() {
-        TODO("Not yet implemented")
-    }
-
-    override fun getThreadNum(): Int = maxThreadNum
-
-    override fun getTaskRemainNum(): Int = tasks.taskRemainNum()
-
-    override fun threadStart(task: Runnable) {
-        TODO("Not yet implemented")
-    }
-
-    override fun threadEnd() {
-        TODO("Not yet implemented")
-    }
-
-    private inner class MyThread(tasks: Runnable) : Thread() {
-        var isRunning = true
-        override fun run() {
-            tasks.run()
-            isRunning = false
+        threads.forEach{
+            it.interrupt()
         }
+        threads.clear()
+        tasks.clear()
+        isShutdown = true
+    }
+
+    override fun isShutdown(): Boolean = isShutdown
+    override fun reStart() {
+        if (isShutdown()) {
+            Log.d("123", "==============  RESTART  ==============")
+            isShutdown = false
+            initializeThreads(initialCount)
+        }
+    }
+
+    override fun getThreadNum(): Int = threads.size
+    override fun getTaskRemainNum(): Int = tasks.getRemainNum()
+    override fun setThreadListener(l: OnThreadListener) {
+        listener = listener?.let { l }
+    }
+
+    override fun threadStop(closedThread: MyThread) {
+        threads.remove(closedThread)
     }
 }

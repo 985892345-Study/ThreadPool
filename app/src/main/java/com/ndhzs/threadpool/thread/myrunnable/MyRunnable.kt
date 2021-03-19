@@ -1,51 +1,38 @@
 package com.ndhzs.threadpool.thread.myrunnable
 
-import android.util.Log
+import com.ndhzs.threadpool.extension.log
+import java.util.concurrent.LinkedBlockingQueue
 
-class MyRunnable() : Runnable {
+class MyRunnable(private val listener: OnThreadStopListener? = null) : Runnable {
 
-    private val TAG ="123"
-
-    private val tasks = RunnableQueue()
-    @Volatile
-    private var isRunning = true
-    @Volatile
-    private var isStop = false
+    private val tasks = LinkedBlockingQueue<Runnable>()
 
     override fun run() {
-        while (isRunning) {
-            tasks.take()?.run()
+        val currentThread = Thread.currentThread() as MyThread
+        while (true) {
+            try {
+                currentThread.startTimer()
+                val task = tasks.take()
+                currentThread.interruptTimer()
+                task.run()
+            }catch (e: InterruptedException) {
+                listener?.threadStop(currentThread)
+                break
+            }
         }
-        Log.d(TAG, "OVER")
-        if (Thread.currentThread().isInterrupted) {
-            Log.d(TAG, "INTERRUPT")
-            return
-        }
-        isStop = true
-    }
-
-    fun stop() {
-        isRunning = false
-        tasks.stop()
-    }
-
-    fun isStop() : Boolean = isStop
-
-    fun restart() {
-        isRunning = true
-        isStop = false
-        tasks.restart()
     }
 
     fun add(task: Runnable) {
-        isRunning = true
-        tasks.put(task)
+        tasks.offer(task)
     }
 
-    fun taskRemainNum(): Int = tasks.size()
+    fun clear() {
+        tasks.clear()
+    }
+
+    fun getRemainNum(): Int = tasks.size
 
     interface OnThreadStopListener {
-        fun threadStop()
-        fun allThreadStop()
+        fun threadStop(closedThread: MyThread)
     }
 }
