@@ -60,7 +60,9 @@ class FixedThreadPool(private val initialCount: Int = 3, private val maxCount: I
     override fun getThreadNum(): Int = threads.size
     override fun getTaskRemainNum(): Int = tasks.getRemainNum()
     override fun setThreadListener(l: OnThreadListener) {
-        listener = listener?.let { l }
+        if (listener == null) {
+            listener = l
+        }
     }
 
     fun addThread(diffThreadNum: Int) {

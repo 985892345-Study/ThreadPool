@@ -60,7 +60,9 @@ class CashedThreadPool(private val initialCount: Int = 0, private val maxCount: 
     override fun getThreadNum(): Int = threads.size
     override fun getTaskRemainNum(): Int = tasks.getRemainNum()
     override fun setThreadListener(l: OnThreadListener) {
-        listener = listener?.let { l }
+        if (listener == null) {
+            listener = l
+        }
     }
 
     override fun threadStop(closedThread: MyThread) {

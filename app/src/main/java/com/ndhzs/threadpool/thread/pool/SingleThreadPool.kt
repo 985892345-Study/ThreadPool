@@ -50,7 +50,7 @@ class SingleThreadPool : IThreadPool {
     override fun getThreadNum(): Int = 1
     override fun getTaskRemainNum(): Int = tasks.getRemainNum()
     override fun setThreadListener(l: OnThreadListener) {
-        if (listener != null) {
+        if (listener == null) {
             listener = l
         }
     }
